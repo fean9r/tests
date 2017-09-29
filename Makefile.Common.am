@@ -1,0 +1,10 @@
+AUTOMAKE_OPTIONS = subdir-objects
+
+# flags
+AM_CPPFLAGS =									\
+	-I@top_srcdir@/src                          \
+	-I@top_builddir@/src
+	
+AM_CXXFLAGS =                                   \
+	$(PTHREAD_CFLAGS) 	 						\
+	-Wall
