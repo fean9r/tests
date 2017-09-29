@@ -120,7 +120,9 @@ public:
 	void addSensor(uint16_t address, bool type) ;
 	void removeSensor(uint16_t address) ;
 	void setConversionFactors(uint16_t address double scalingFactor, double offset) ;
-	const uint16_t* getSensorList();
+	// the getSensorList method should return the list of sensors addresses
+	// const uint16_t* getSensorList() { return test; }
+	// const vector<uint16_t>& getSensorList() const;
 	void setOutStream(ostream& stream){ out_stream_ = stream;}
 	void stop() { stop_ = true; }
 
