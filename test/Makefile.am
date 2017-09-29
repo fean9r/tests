@@ -1,5 +1,5 @@
 include $(top_srcdir)/Makefile.Common.am
-		 
+
 # ======================================================================================================================
 # Tests program
 # ----------------------------------------------------------------------------------------------------------------------
@@ -8,12 +8,19 @@ include $(top_srcdir)/Makefile.Common.am
 TESTS = 
 check_PROGRAMS = 
 
+
+
+
 # ==== Decoder Encoder Test
 TESTS += cern_vme_test
 check_PROGRAMS += cern_vme_test
+TESTS += $(check_PROGRAMS) standalone1.test standalone2.test
+EXTRA_DIST = $(TESTS)
+
 cern_vme_test_SOURCES =	 							\
 	main.cpp										\
 	cern/VmeTest.cpp
 
 cern_vme_test_LDADD =                               \
-	@top_builddir@/src/libcern_vme.la
+	@top_builddir@/src/libcern_vme.la				\
+	$(BOOST_SYSTEM_LIB)

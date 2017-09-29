@@ -1,4 +1,5 @@
 #include "vmod.h"
+
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
@@ -13,5 +14,3 @@ double readHardware(uint16_t address)
 	usleep(microseconds);
 	return memory[address % 8] + microseconds;
 }
-
-// gcc -Wall -c vmod.c; ar cr libvmod.a vmod.o

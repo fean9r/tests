@@ -18,12 +18,12 @@ nobase_vme_include_HEADERS =
 
 # Library
 clib_headers =                               \
-	cern/clib/vmod.h
+	cern/ext/vmod.h
 
 nobase_vme_include_HEADERS += $(clib_headers)
 
 clib_sources =                               \
-	cern/clib/vmod.c
+	cern/ext/vmod.c
 
 noinst_LIBRARIES = libvmod.a
 #a_AR = $(CXX) -ar -o
@@ -34,13 +34,22 @@ libvmod_a_SOURCES = $(clib_sources)
 # vme library
 # ----------------------------------------------------------------------------------------------------------------------
 # Library
-vme_headers =                               \
-	cern/vme/test.h
+vme_headers =                   	            \
+	cern/vme/Event.h    		                \
+	cern/vme/Encoder.h    		                \
+	cern/vme/SafeQueue.hpp                      \
+	cern/vme/Sensor.h                      		\
+	cern/vme/Supervisable.h                		\
+	cern/vme/VMESensorsManager.h               	\
+	cern/vme/XmlEncoder.h
 
 nobase_vme_include_HEADERS += $(vme_headers)
 
-vme_sources =                               \
-	cern/vme/test.cpp
+vme_sources =                               	\
+	cern/vme/Encoder.cpp    		            \
+	cern/vme/Sensor.cpp                      	\
+	cern/vme/VMESensorsManager.cpp              \
+	cern/vme/XmlEncoder.cpp
 
 lib_LTLIBRARIES += libvme.la
 libvme_la_SOURCES = $(vme_sources)
