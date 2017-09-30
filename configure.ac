@@ -25,8 +25,7 @@ fi
 # ------------------------------------------------------------------------------
 # Check for tool support
 # ------------------------------------------------------------------------------
-AX_CHECK_COMPILE_FLAG([-std=c++0x], [
-                        CXXFLAGS="$CXXFLAGS -std=c++0x"])
+
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 AM_PROG_CC_C_O
@@ -49,11 +48,6 @@ AX_BOOST_BASE([1.40.0],[],
 	Please go to www.boost.org to download them.])]
 )
 AX_BOOST_SYSTEM
-# ------------------------------------------------------------------------------
-# Check for pthread libraries
-# ------------------------------------------------------------------------------
-ACX_PTHREAD([have_pthread=yes])
-
 
 # ------------------------------------------------------------------------------
 # Check for C++ libraries
@@ -69,17 +63,6 @@ AC_ARG_ENABLE( [debug],
 	AS_HELP_STRING([--enable-debug],
 	[compile with debug symbols @<:@default=no@:>@]),
     [want_debug="$enableval"], [want_debug=no])
-# ---------------------------------------------------------------------
-# Debug and profile
-# ---------------------------------------------------------------------
-
-if test "x$want_debug" = "xyes"; then
-    CFLAGS="$CFLAGS -g3 -O0 -Wall"
-	CXXFLAGS="$CXXFLAGS -g3 -O0 -Wall"
-else
-  CFLAGS="$CFLAGS -O2"
-  CXXFLAGS="$CXXFLAGS -O2"
-fi
 
 
 AC_TYPE_SIZE_T
