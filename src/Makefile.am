@@ -28,7 +28,6 @@ clib_sources =                               \
 noinst_LIBRARIES = libvmod.a
 #a_AR = $(CXX) -ar -o
 libvmod_a_SOURCES = $(clib_sources)
-#libvmod_la_LIBADD  = 
 
 # ======================================================================================================================
 # vme library

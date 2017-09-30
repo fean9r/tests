@@ -30,9 +30,10 @@ void VMESensorsManager::addSensor(uint16_t address, bool type)
 
 void VMESensorsManager::removeSensor(uint16_t address)
 {
-	// how to do this?
-	SensorVector::iterator it = std::remove(sensors_.begin(), sensors_.end(), Sensor(address));
-	sensors_.erase(it, sensors_.end());
+	sensors_.erase(
+			std::remove_if(sensors_.begin(), sensors_.end(),
+					[&] (SensorPtr const& s){ return s->getAddress() == address;}),
+			sensors_.end());
 }
 
 void VMESensorsManager::setOutStream(std::ostream& stream)
@@ -56,9 +57,11 @@ void VMESensorsManager::stop()
 
 void VMESensorsManager::setConversionFactors(uint16_t address, double scalingFactor, double offset)
 {
-	SensorVector::iterator it = std::find(sensors_.begin(), sensors_.end(), Sensor(address));
-	if (it != sensors_.end())
-		(*it)->setCalibrator(scalingFactor, offset);
+	SensorVectorIterator results = std::find_if(sensors_.begin(), sensors_.end(), [&] (SensorPtr const& s)
+	{	return s->getAddress() == address;});
+
+	if (results != sensors_.end())
+		(*results)->setCalibrator(scalingFactor, offset);
 	else
 		std::cout << "Element not found in myvector\n";
 }
@@ -73,7 +76,7 @@ void VMESensorsManager::run()
 //			s.read();
 //		}
 
-		// where should I put this??
+// where should I put this??
 		Event state = queue_.dequeue();
 		if (encoder_)
 		{

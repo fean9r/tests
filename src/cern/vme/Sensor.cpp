@@ -29,4 +29,9 @@ void Sensor::read()
 	queue_.enqueue(state_);
 }
 
+//bool Sensor::operator==(const Sensor &s1, const Sensor &s2)
+//{
+//	return s1.sensor_address_ == s2.sensor_address_;
+//}
+
 } // namespace cern

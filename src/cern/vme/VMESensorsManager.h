@@ -16,6 +16,7 @@ class Sensor;
 //template<class T> using PtrVector = std::vector<std::unique_ptr<T>>;
 typedef typename std::unique_ptr<Sensor> SensorPtr;
 typedef typename std::vector<SensorPtr> SensorVector;
+typedef typename std::vector<SensorPtr>::iterator SensorVectorIterator;
 
 class VMESensorsManager : public Supervisable
 {

@@ -17,7 +17,7 @@ namespace cern
 class Supervisable
 {
 public:
-	virtual ~Supervisable() = 0;
+	virtual ~Supervisable() {};
 	virtual void addSensor(uint16_t address, bool type) = 0;
 	virtual void removeSensor(uint16_t address) = 0;
 	virtual void setConversionFactors(uint16_t address, double scalingFactor, double offset) = 0;
