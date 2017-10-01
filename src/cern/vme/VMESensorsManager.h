@@ -31,10 +31,18 @@ public:
 	VMESensorsManager();
 	virtual ~VMESensorsManager();
 
+	// Throws if the same address is added twice
+	// Throws if max sensor is reached
 	void addSensor(uint16_t address, bool type);
+
+	// Remove if address matches with installed sensor do nothing instead
 	void removeSensor(uint16_t address);
-	void setConversionFactors(uint16_t address, double scalingFactor, double offset);
+
+	//
 	std::vector<uint16_t> getSensorList() const;
+
+	void setConversionFactors(uint16_t address, double scalingFactor, double offset);
+
 	void setOutStream(std::ostream& stream);
 
 	void stop();

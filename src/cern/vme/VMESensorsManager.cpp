@@ -27,11 +27,22 @@ VMESensorsManager::~VMESensorsManager()
 
 void VMESensorsManager::addSensor(uint16_t address, bool type)
 {
-	if (sensors_.size() < 8)
+	// if we have already max num of sensors throw exception
+	if (sensors_.size() == 8)
 	{
-		sensors_.push_back(SensorPtr(new Sensor(address, queue_)));
-	} else
-		throw std::runtime_error("Max sensor reached !");
+		throw std::out_of_range("Max sensor number reached!");
+	}
+
+	// find if there is already a sensor listening at that address
+	SensorVectorIterator it = std::find_if(sensors_.begin(), sensors_.end(),
+			[&] (SensorPtr const& s) { return s->getAddress() == address; });
+	// if yes throw exception
+	if (it != sensors_.end())
+	{
+		throw std::runtime_error("Sensor already installed!");
+	}
+
+	sensors_.push_back(SensorPtr(new Sensor(address, queue_)));
 }
 
 void VMESensorsManager::removeSensor(uint16_t address)
