@@ -1,8 +1,7 @@
 /*
  * XmlEncoder.cpp
  *
- *  Created on: Sep 29, 2017
- *      Author: fean9r
+ *      Author: Iacopo Breschi
  */
 
 #include "XmlEncoder.h"

@@ -1,3 +1,9 @@
+/*
+ * VMESensorsManager.cpp
+ *
+ *      Author: Iacopo Breschi
+ */
+
 #include "VMESensorsManager.h"
 #include "Event.h"
 #include "Sensor.h"

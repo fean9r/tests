@@ -1,7 +1,6 @@
 /*
  * SafeQueue.hpp
  *
- *  Created on: Sep 29, 2017
  *      Author: Iacopo Breschi
  */
 

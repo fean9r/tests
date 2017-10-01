@@ -1,8 +1,7 @@
 /*
  * Supervisable.h
  *
- *  Created on: Sep 29, 2017
- *      Author: fean9r
+ *      Author: Iacopo Breschi
  */
 
 #ifndef cern_vme_Supervisable_h_INCLUDED

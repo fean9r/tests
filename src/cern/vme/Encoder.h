@@ -1,7 +1,6 @@
 /*
  * Encoder.h
  *
- *  Created on: Sep 29, 2017
  *      Author: Iacopo BRESCHI
  */
 

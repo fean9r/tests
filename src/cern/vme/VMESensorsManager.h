@@ -1,3 +1,9 @@
+/*
+ * VMESensorsManager.h
+ *
+ *      Author: Iacopo Breschi
+ */
+
 #ifndef cern_vme_VMESensorsManager_h_INCLUDED
 #define cern_vme_VMESensorsManager_h_INCLUDED
 

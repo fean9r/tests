@@ -1,3 +1,9 @@
+/*
+ * Sensor.h
+ *
+ *      Author: Iacopo Breschi
+ */
+
 #ifndef cern_vme_Sensor_h_INCLUDED
 #define cern_vme_Sensor_h_INCLUDED
 

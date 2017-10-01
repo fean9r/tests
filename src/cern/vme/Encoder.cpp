@@ -1,8 +1,7 @@
 /*
  * Encoder.cpp
  *
- *  Created on: Sep 29, 2017
- *      Author: fean9r
+ *      Author: Iacopo BRESCHI
  */
 
 #include "Encoder.h"
