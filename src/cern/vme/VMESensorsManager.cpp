@@ -4,8 +4,8 @@
  *      Author: Iacopo Breschi
  */
 
+#include <cern/vme/SensorState.h>
 #include "VMESensorsManager.h"
-#include "Event.h"
 #include "Sensor.h"
 #include "XmlEncoder.h"
 
@@ -23,12 +23,23 @@ namespace cern
 
 VMESensorsManager::VMESensorsManager() :
 				stop_(false),
-				ready_(false)
+				ready_(false),
+				work_done_(false)
 {
+	consumerThread_ = std::thread(&VMESensorsManager::run, this);
 }
 
 VMESensorsManager::~VMESensorsManager()
 {
+	std::cout << "Destructor\n";
+
+	if (!stop_)
+	{
+		stop_ = true;
+		work_done_ = true;
+		cv_.notify_all();
+	}
+	consumerThread_.join();
 }
 
 void VMESensorsManager::addSensor(uint16_t address, bool type)
@@ -48,9 +59,9 @@ void VMESensorsManager::addSensor(uint16_t address, bool type)
 		throw std::runtime_error("Sensor already installed!");
 	}
 
-	SensorPtr sensor_ptr(new Sensor(address, queue_, cv_m_, cv_, ready_,work_done_));
+	SensorPtr sensor_ptr(new Sensor(address, queue_, cv_m_, cv_, ready_, work_done_));
 	sensor_ptr->runThread();
-	sensors_.push_back(move(sensor_ptr));
+	sensors_.push_back(std::move(sensor_ptr));
 }
 
 void VMESensorsManager::removeSensor(uint16_t address)
@@ -97,11 +108,11 @@ void VMESensorsManager::notify_all()
 
 void VMESensorsManager::run()
 {
-	std::vector<Event> events;
+	std::vector<SensorState> events;
 	while (!stop_)
 	{
 		// Instrumentation
-		steady_clock::time_point const timeout = steady_clock::now() + milliseconds(500);
+		steady_clock::time_point const timeout = steady_clock::now() + milliseconds(1000);
 		auto start = std::chrono::high_resolution_clock::now();
 
 		events.clear();
@@ -110,16 +121,14 @@ void VMESensorsManager::run()
 
 		// either I choose to empty the queue one by one or at once
 
-
-		// 2) Wait 500 ms. After this I'm pretty sure all sensors have
-		// done their job..
+		// 2) Wait 500 ms. After this I'm pretty sure all sensors have done their job..
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
 		// 3) empty the queue at once
 		for (size_t i = 0; i <= queue_.size(); ++i)
 		{
-			Event state = queue_.dequeue();
-			events.push_back(state);
+			SensorState state;
+			if (queue_.try_dequeue(state, std::chrono::milliseconds(500))) events.push_back(state);
 		}
 
 		// 4) Use the encoder to format and stream out the sensor readouts
@@ -137,6 +146,7 @@ void VMESensorsManager::run()
 		std::cout << "Waited " << elapsed.count() << " ms\n";
 	}
 	work_done_ = true;
+	cv_.notify_all();
 }
 } // namespace cern
 

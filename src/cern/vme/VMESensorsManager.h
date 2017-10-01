@@ -7,12 +7,12 @@
 #ifndef cern_vme_VMESensorsManager_h_INCLUDED
 #define cern_vme_VMESensorsManager_h_INCLUDED
 
-#include "Event.h"
 #include "Supervisable.h"
 #include "SafeQueue.hpp"
 #include <vector>
 #include <memory>
 #include <thread>
+#include "SensorState.h"
 
 namespace cern
 {
@@ -50,14 +50,17 @@ public:
 private:
 	void run();
 	void notify_all();
+	void stop_all();
 
 	SensorVector sensors_;
-	std::thread producerThread_;
+	std::unique_ptr<Encoder> encoder_;
+
+	std::thread consumerThread_;
 	std::condition_variable cv_;
 	std::mutex cv_m_;
 
-	SafeQueue<Event> queue_;
-	std::unique_ptr<Encoder> encoder_;
+	SafeQueue<SensorState> queue_;
+
 	bool stop_;
 	bool ready_;
 	bool work_done_;
