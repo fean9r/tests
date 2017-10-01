@@ -18,15 +18,57 @@ struct VMEFixture
 	VMEFixture()
 	{
 	}
+	VMESensorsManager sensor_manager;
 };
 
 BOOST_FIXTURE_TEST_SUITE (cern_VmeTest, VMEFixture)
 
-BOOST_AUTO_TEST_CASE(first_test)
+BOOST_AUTO_TEST_CASE(addSensor_test)
 {
-	// We are here in the supervisor
-	VMESensorsManager sensor_manager;
+	sensor_manager.addSensor(0xAAAA, true );
+	sensor_manager.addSensor(0xBBBB, true );
+	sensor_manager.addSensor(0xCCCC, true );
+	sensor_manager.addSensor(0xDDDD, true );
+}
+BOOST_AUTO_TEST_CASE(setConversionFactors_test)
+{
+	sensor_manager.addSensor(0xAAAA, true );
+	sensor_manager.setConversionFactors(0xAAAA,2.5,70);
 
+}
+BOOST_AUTO_TEST_CASE(getSensorList_test)
+{
+	sensor_manager.addSensor(0xAAAA, true );
+	sensor_manager.addSensor(0xBBBB, true );
+	sensor_manager.addSensor(0xCCCC, true );
+	sensor_manager.addSensor(0xDDDD, true );
+
+	for(auto sen : sensor_manager.getSensorList())
+	{
+		std::cout << sen << std::endl;
+		BOOST_CHECK_EQUAL(10, 10);
+
+	}
+}
+BOOST_AUTO_TEST_CASE(setOutStream_test)
+{
+	sensor_manager.setOutStream(std::cout);
+
+}
+
+BOOST_AUTO_TEST_CASE(stop_test)
+{
+	sensor_manager.stop();
+}
+
+BOOST_AUTO_TEST_CASE(removeSensor_test)
+{
+
+	BOOST_CHECK_EQUAL(10, 10);
+}
+
+BOOST_AUTO_TEST_CASE(full_test)
+{
 	sensor_manager.setOutStream(std::cout);
 
 	// after this xml formatted data should be printed each second
@@ -58,7 +100,6 @@ BOOST_AUTO_TEST_CASE(first_test)
 	// all data should stop now
 	sensor_manager.stop();
 
-	BOOST_CHECK_EQUAL(10, 10);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
