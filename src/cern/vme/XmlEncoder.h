@@ -18,10 +18,11 @@ class XmlEncoder : public Encoder
 public:
 	XmlEncoder(std::ostream& stream);
 	virtual ~XmlEncoder();
-	void encode();
-private:
-	std::ostream& out_stream_;
 
+	void encode(std::vector<Event> events);
+private:
+	void addElement(Event& elem, std::stringstream & stream);
+	std::ostream& out_stream_;
 };
 
 } /* namespace cern */

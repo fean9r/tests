@@ -45,7 +45,6 @@ vme_headers =                   	            \
 nobase_vme_include_HEADERS += $(vme_headers)
 
 vme_sources =                               	\
-	cern/vme/Encoder.cpp    		            \
 	cern/vme/Sensor.cpp                      	\
 	cern/vme/VMESensorsManager.cpp              \
 	cern/vme/XmlEncoder.cpp

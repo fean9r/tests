@@ -7,15 +7,17 @@
 #ifndef cern_vme_Encoder_h_INCLUDED
 #define cern_vme_Encoder_h_INCLUDED
 
+#include "Event.h"
+#include <vector>
+
 namespace cern
 {
 
 class Encoder
 {
 public:
-	Encoder();
-	virtual ~Encoder();
-	virtual void encode() = 0;
+	virtual ~Encoder() {}
+	virtual void encode(std::vector<Event> events) = 0;
 };
 
 } /* namespace cern */
