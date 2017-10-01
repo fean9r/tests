@@ -19,9 +19,9 @@ public:
 	XmlEncoder(std::ostream& stream);
 	virtual ~XmlEncoder();
 
-	void encode(std::vector<Event> events);
+	void encode(std::vector<SensorState> events);
 private:
-	void addElement(Event& elem, std::stringstream & stream);
+	void addElement(SensorState& elem, std::stringstream & stream);
 	std::ostream& out_stream_;
 };
 

@@ -22,7 +22,7 @@ XmlEncoder::~XmlEncoder()
 {
 }
 
-void XmlEncoder::addElement(Event & elem, std::stringstream & stream)
+void XmlEncoder::addElement(SensorState & elem, std::stringstream & stream)
 {
 	stream << "\t<Sensor>\n";
 	stream << "\t\t<address>" << elem.address << "</address>\n";
@@ -32,7 +32,7 @@ void XmlEncoder::addElement(Event & elem, std::stringstream & stream)
 	stream << "\t</Sensor>\n";
 }
 
-void XmlEncoder::encode(std::vector<Event> events)
+void XmlEncoder::encode(std::vector<SensorState> events)
 {
 	std::stringstream ss("", std::ios_base::out);
 	ss << "<Sensors>\n";

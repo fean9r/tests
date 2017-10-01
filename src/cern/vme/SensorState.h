@@ -4,14 +4,14 @@
  *      Author: Iacopo BRESCHI
  */
 
-#ifndef cern_vme_Event_h_INCLUDED
-#define cern_vme_Event_h_INCLUDED
+#ifndef cern_vme_SensorState_h_INCLUDED
+#define cern_vme_SensorState_h_INCLUDED
 #include <cstdint>
 
 namespace cern
 {
 
-struct Event
+struct SensorState
 {
 	uint16_t address;
 	double max_temp;
@@ -21,4 +21,4 @@ struct Event
 
 } // namespace cern
 
-#endif /* cern_vme_Event_h_INCLUDED */
+#endif /* cern_vme_SensorState_h_INCLUDED */

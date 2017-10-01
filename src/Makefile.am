@@ -34,7 +34,7 @@ libvmod_a_SOURCES = $(clib_sources)
 # ----------------------------------------------------------------------------------------------------------------------
 # Library
 vme_headers =                   	            \
-	cern/vme/Event.h    		                \
+	cern/vme/SensorState.h    		            \
 	cern/vme/Encoder.h    		                \
 	cern/vme/SafeQueue.hpp                      \
 	cern/vme/Sensor.h                      		\
