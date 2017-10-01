@@ -53,9 +53,14 @@ private:
 
 	SensorVector sensors_;
 	std::thread producerThread_;
+	std::condition_variable cv_;
+	std::mutex cv_m_;
+
 	SafeQueue<Event> queue_;
 	std::unique_ptr<Encoder> encoder_;
 	bool stop_;
+	bool ready_;
+	bool work_done_;
 };
 
 } // namespace cern

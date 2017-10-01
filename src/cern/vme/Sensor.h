@@ -10,6 +10,8 @@
 #include "SafeQueue.hpp"
 #include "Event.h"
 #include <cern/ext/vmod.h>
+#include <thread>
+#include <condition_variable>
 
 namespace cern
 {
@@ -17,34 +19,14 @@ namespace cern
 class Sensor
 {
 public:
-	Sensor(uint16_t address, SafeQueue<Event> & queue) :
-					sensor_address_(address),
-					scalingFactor_(),
-					offset_(),
-					state_(),
-					queue_(queue)
-	{
-		state_.address = sensor_address_;
-	}
+	Sensor(uint16_t address, SafeQueue<Event> & queue,std::mutex& mut, std::condition_variable& cond, bool & ready, bool & work_done);
 
-	virtual ~Sensor()
-	{
-	}
+	virtual ~Sensor();
 
-	uint16_t getAddress() const
-	{
-		return sensor_address_;
-	}
-
-	void setCalibrator(double scalingFactor, double offset)
-	{
-		scalingFactor_ = scalingFactor;
-		offset_ = offset;
-	}
-
+	void runThread();
+	uint16_t getAddress() const;
+	void setCalibrator(double scalingFactor, double offset);
 	void read();
-
-	//friend bool operator==(const Sensor &s1, const Sensor &s2);
 
 private:
 	double applyCalibration(double analog_val);
@@ -54,8 +36,13 @@ private:
 	double offset_;
 	Event state_;
 	SafeQueue<Event> & queue_;
-};
+	std::thread thread_;
+	std::condition_variable& cv_;
+	std::mutex& cv_m_;
+	bool & ready_;
+	bool & work_done_;
 
+};
 
 } // namespace cern
 
