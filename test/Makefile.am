@@ -15,6 +15,8 @@ EXTRA_DIST = $(TESTS)
 
 cern_vme_test_SOURCES =	 							\
 	main.cpp										\
+	cern/EncoderTest.cpp							\
+	cern/SensorTest.cpp								\
 	cern/VmeTest.cpp
 
 cern_vme_test_LDFLAGS =                             \
