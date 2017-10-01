@@ -11,13 +11,12 @@
 #include <mutex>
 #include <condition_variable>
 
-// https://stackoverflow.com/questions/15278343/c11-thread-safe-queue
 template<class T>
 struct SafeQueue
 {
 	SafeQueue() :
 					queue_(),
-					mut_(),
+					mutex_(),
 					cond_()
 	{
 	}
@@ -27,14 +26,14 @@ struct SafeQueue
 
 	void enqueue(T item)
 	{
-		std::lock_guard<std::mutex> lock(mut_);
+		std::lock_guard<std::mutex> lock(mutex_);
 		queue_.push(item);
 		cond_.notify_one();
 	}
 
 	bool try_dequeue(T & item, std::chrono::milliseconds timeout)
 	{
-		std::unique_lock<std::mutex> lock(mut_);
+		std::unique_lock<std::mutex> lock(mutex_);
 
 		if (!cond_.wait_for(lock, timeout, [this]
 		{	return !queue_.empty();})) return false;
@@ -46,7 +45,7 @@ struct SafeQueue
 
 	T dequeue(void)
 	{
-		std::unique_lock<std::mutex> lock(mut_);
+		std::unique_lock<std::mutex> lock(mutex_);
 		while (queue_.empty())
 		{
 			cond_.wait(lock);
@@ -57,12 +56,13 @@ struct SafeQueue
 	}
 	size_t size()
 	{
-		// TODO: needs guards?
-		return queue_.size();
+		std::unique_lock<std::mutex> lock(mutex_);
+		size_t size = queue_.size();
+		return size;
 	}
 private:
 	std::queue<T> queue_;
-	std::mutex mut_;
+	std::mutex mutex_;
 	std::condition_variable cond_;
 };
 

@@ -6,12 +6,10 @@
 
 #include "Sensor.h"
 
-#include <iostream>
-#include <atomic>
-
+#include <limits>
 namespace cern
 {
-void addTemperature(SensorState& state, double temp)
+void updateState(SensorState& state, double temp)
 {
 	if (state.max_temp < temp) state.max_temp = temp;
 	if (state.min_temp > temp) state.min_temp = temp;
@@ -24,26 +22,26 @@ Sensor::Sensor(uint16_t address, SafeQueue<SensorState> & queue, std::mutex& mut
 				offset_(),
 				state_(),
 				queue_(queue),
-				thread_(),
+				producer_thread_(),
 				cond_var_(cond),
 				cv_mutex_(mut),
 				ready_for_next_(ready),
-				work_done_(work_done),
-				read_counter_(0)
+				read_counter_(0),
+				work_done_(work_done)
 {
 	state_.address = sensor_address_;
-//		state_.max_temp=0;
-//		state_.min_temp=0;
+	state_.max_temp = -50000;
+	state_.min_temp = std::numeric_limits<double>::max();
 }
 
 Sensor::~Sensor()
 {
-	if (thread_.joinable()) thread_.join();
+	if (producer_thread_.joinable()) producer_thread_.join();
 }
 
 void Sensor::runThread()
 {
-	thread_ = std::thread(&Sensor::read, this);
+	producer_thread_ = std::thread(&Sensor::read, this);
 }
 
 uint16_t Sensor::getAddress() const
@@ -73,8 +71,9 @@ void Sensor::read()
 			read_counter_++;
 		}
 
-		double readout = readHardware(sensor_address_);
-		addTemperature(state_, applyCalibration(readout));
+		double binary_readout = readHardware(sensor_address_);
+		double temperature = applyCalibration(binary_readout);
+		updateState(state_, temperature);
 		queue_.enqueue(state_);
 		if (work_done_) break;
 

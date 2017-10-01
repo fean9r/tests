@@ -9,10 +9,10 @@
 
 #include "Supervisable.h"
 #include "SafeQueue.hpp"
+#include "SensorState.h"
 #include <vector>
 #include <memory>
 #include <thread>
-#include "SensorState.h"
 
 namespace cern
 {
@@ -54,12 +54,11 @@ private:
 
 	SensorVector sensors_;
 	std::unique_ptr<Encoder> encoder_;
-
+	SafeQueue<SensorState> queue_;
 	std::thread consumerThread_;
+
 	std::condition_variable cv_;
 	std::mutex cv_m_;
-
-	SafeQueue<SensorState> queue_;
 
 	bool stop_;
 	bool ready_;

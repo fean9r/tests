@@ -4,7 +4,6 @@
  *      Author: Iacopo Breschi
  */
 
-#include <cern/vme/SensorState.h>
 #include "VMESensorsManager.h"
 #include "Sensor.h"
 #include "XmlEncoder.h"
@@ -12,8 +11,6 @@
 #include <iostream>
 #include <algorithm>
 #include <stdexcept>
-#include <thread>
-
 #include <chrono>
 
 using namespace std::chrono;
@@ -31,8 +28,6 @@ VMESensorsManager::VMESensorsManager() :
 
 VMESensorsManager::~VMESensorsManager()
 {
-	std::cout << "Destructor\n";
-
 	if (!stop_)
 	{
 		stop_ = true;
@@ -121,8 +116,8 @@ void VMESensorsManager::run()
 
 		// either I choose to empty the queue one by one or at once
 
-		// 2) Wait 500 ms. After this I'm pretty sure all sensors have done their job..
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		// 2) Wait 550 ms. After this I'm pretty sure all sensors have done their job..
+		std::this_thread::sleep_for(std::chrono::milliseconds(550));
 
 		// 3) empty the queue at once
 		for (size_t i = 0; i <= queue_.size(); ++i)

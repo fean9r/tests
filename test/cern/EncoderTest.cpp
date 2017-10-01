@@ -5,7 +5,7 @@
  *      Author: fean9r
  */
 #include <boost/test/auto_unit_test.hpp>
-#include </cern/vme/SensorState.h>
+#include <cern/vme/SensorState.h>
 #include <cern/vme/XmlEncoder.h>
 #include <iostream>
 

@@ -10,6 +10,7 @@
 #include "SafeQueue.hpp"
 #include <cern/ext/vmod.h>
 #include <thread>
+#include <atomic>
 #include <condition_variable>
 #include "SensorState.h"
 
@@ -36,13 +37,12 @@ private:
 	double offset_;
 	SensorState state_;
 	SafeQueue<SensorState> & queue_;
-	std::thread thread_;
+	std::thread producer_thread_;
 	std::condition_variable& cond_var_;
 	std::mutex& cv_mutex_;
+	std::atomic_int read_counter_;
 	bool & ready_for_next_;
 	bool & work_done_;
-	std::atomic_int read_counter_;
-
 };
 
 } // namespace cern

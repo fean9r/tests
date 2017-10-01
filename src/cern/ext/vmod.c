@@ -10,7 +10,7 @@ double readHardware(uint16_t address)
 {
 	time_t t;
 	srand((unsigned) time(&t));
-	unsigned int microseconds = rand() % 10 * 50;
+	unsigned int microseconds = rand() % 10 * 2;
 	usleep(microseconds);
 	return memory[address % 8] + microseconds;
 }
